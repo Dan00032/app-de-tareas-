@@ -91,9 +91,6 @@ function tareaEliminada(element) {
         confirmButtonColor: "#3085d6"
     });    return;
   }
-   if (textoElemento && tarea.tema) {
-    textoElemento.textContent = tarea.tema;
-  }
 
  fetch(`https://backend-apptareas.onrender.com/tareas/${idTarea}?id_usuario=${idUsuario}`, {
   method: "DELETE"
@@ -104,7 +101,6 @@ function tareaEliminada(element) {
     if (!res.ok) throw new Error("Error al eliminar en la BD");
     return res.text();
 })
-
 .then(data => {
     console.log("Backend dijo:", data);
     // Eliminar tarea del DOM
@@ -135,7 +131,7 @@ function tareaEliminada(element) {
 
 function cargarLista(array) {
   array.forEach(function (item) {
-    agregarTarea(item.tema, item.id, item.realizado, item.eliminado);
+    agregarTarea(item.nombre, item.id, item.realizado, item.eliminado);
   });
 }
 //----------------------------------------------------------------------------
@@ -226,10 +222,11 @@ function crearTarea(tema) {
   if (typeof id !== 'number') id = 0;
   LIST.push({
   id: data.tarea.id_tarea,
-  nombre: data.tarea.tema,  
+  nombre: data.tarea.tema,   // propiedad estandarizada
   realizado: data.tarea.hecha,
   eliminado: false
 });
+
   id++;
   localStorage.setItem("TODO", JSON.stringify(LIST));
 
