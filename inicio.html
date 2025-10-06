@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="inicio.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantallla de inicio</title>
+</head>
+<body>
+    <header>
+        <h1>inicio de secion</h1>
+    </header>
+   <div class="inicio" id="inicio">
+    <input type="email" class="input" placeholder="Correo electrónico" />
+    <input type="password" class="input" placeholder="Contraseña" />
+        <button class="btn">Iniciar sesión</button>
+    
+    <div class="registrarse">
+        ¿Crear cuenta? 
+        <a href="#" id="registrarse2">Registrarse</a>
+    </div>
+</div>
+
+  <div class="registro" id="registro1">
+    <input type="text" class="input" placeholder="Nombre" />
+    <input type="text" class="input" placeholder="Apellido" />
+    <input type="email" class="input" placeholder="Correo electrónico" />
+    <input type="password" class="input" placeholder="Contraseña" />
+    
+    <button class="btn">Crear cuenta</button>
+    
+    <div class="iniciar">
+        ¿Ya tienes una cuenta? 
+        <a href="#" id="iniciar2">Iniciar sesión</a>
+    </div>
+</div>
+
+   <script>
+  const btnRegistrarse = document.getElementById("registrarse2"); 
+  const btnIniciar = document.getElementById("iniciar2");    
+
+  const inicioContainer = document.getElementById("inicio");  
+  const registroContainer = document.getElementById("registro1"); 
+
+  registroContainer.classList.add("hidden");
+    registroContainer.style.display = "none";
+    inicioContainer.style.display = "";
+
+    
+  btnRegistrarse.addEventListener("click", (e) => {
+    e.preventDefault(); 
+    inicioContainer.style.display = "none";
+    registroContainer.style.display = "";
+  });
+
+  btnIniciar.addEventListener("click", (e) => {
+    e.preventDefault();
+    registroContainer.style.display = "none";
+    inicioContainer.style.display = "";
+  });
+
+  //este es el fetch de iniciar secion
+ const inputCorreo = inicioContainer.querySelector("input[type='email']");
+const inputPassword = inicioContainer.querySelector("input[type='password']");
+const btnLogin = inicioContainer.querySelector(".btn");
+
+btnLogin.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const datos = {
+    Gmail: inputCorreo.value.trim(),
+    Password: inputPassword.value.trim()
+  };
+
+  try {
+    const respuesta = await fetch("https://backend-apptareas.onrender.com/login", { 
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos)
+    });
+
+    const resultado = await respuesta.json();
+
+     if (respuesta.ok) {
+
+      localStorage.setItem("id_usuario", resultado.usuario.id_usuario);
+
+      window.location.href = "index.html";
+    } else {
+      alert("Correo o contraseña incorrectos");
+    }
+
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+  }
+});
+
+//este es el fetch de crear cuenta
+ const inputNombre = registroContainer.querySelector("input[placeholder='Nombre']");
+const inputApellido = registroContainer.querySelector("input[placeholder='Apellido']");
+const inputCorreoRegistro = registroContainer.querySelector("input[placeholder='Correo electrónico']");
+const inputPasswordRegistro = registroContainer.querySelector("input[placeholder='Contraseña']");
+const btnCrearCuenta = registroContainer.querySelector(".btn");
+
+btnCrearCuenta.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const datosUsuario = {
+    Nombre: inputNombre.value.trim(),
+    Apellido: inputApellido.value.trim(),
+    Gmail: inputCorreoRegistro.value.trim(),
+    Password: inputPasswordRegistro.value.trim()
+  };
+
+  if (!datosUsuario.Nombre || !datosUsuario.Apellido || !datosUsuario.Gmail || !datosUsuario.Password) {
+    alert("Por favor, completa todos los campos");
+    return;
+  }
+
+  try {
+    const respuesta = await fetch("https://backend-apptareas.onrender.com/usuarios", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datosUsuario)
+    });
+
+    const resultado = await respuesta.json();
+
+    if (respuesta.ok) {
+      alert("¡Usuario creado exitosamente!");
+      registroContainer.style.display = "none";
+      inicioContainer.style.display = "";
+    } else {
+      alert("Error: " + resultado.error);
+    }
+
+  } catch {
+  }
+});
+</script>
+</body>
+</html>

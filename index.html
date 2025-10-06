@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>libro de notas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="perfil">
+        <div id="fecha"></div>
+      </div>
+
+      <div class="Agregar">
+        <input type="text" id="input" placeholder="Agregar Nueva Nota" />
+        <i id="enter" class="fas fa-plus-circle"></i>
+      </div>
+      <div class="seccion">
+        <ul id="lista">
+          <!-- <li id="elemento">
+            <i class="far fa-circle co" data="realizado" id="0"></i>
+            <p class="text">aqui va la tarea</p>
+            <i class="fas fa-trash" data="eliminado" id="0"></i>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+    <button class="boton">Eliminar Cuenta</button>
+    <button id="logout" class="btn-roja">Cerrar sesión</button>
+    <button class="boton2">Actualizar Datos</button>
+    <script src="script.js" defer></script>
+  </body>
+</html>

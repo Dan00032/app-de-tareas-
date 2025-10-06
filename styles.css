@@ -1,0 +1,162 @@
+:root {
+  --green: green;
+  --red: red;
+  --blue: blue;
+  --yellow: yellow;
+  --orange: orange;
+  --black: black;
+  --width: white;
+}
+
+body {
+background: linear-gradient(40deg,rgba(42, 123, 155, 1), rgba(80, 188, 136, 0.91), rgba(87, 199, 133, 0.99), rgba(0, 0, 0, 1));
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.seccion {
+  height: 500px;
+  width: 500px;
+  overflow-y: auto;
+}
+.seccion li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  background: linear-gradient(40deg, rgba(80, 188, 136, 0.91) 35%, rgba(87, 199, 133, 0.99) 82%);
+  border-radius: 15px;
+  padding: 10px;
+  color: white;
+  margin: 5px 0;
+  gap: 10px;
+}
+.input-editar {
+  flex: 1;
+  font-size: 16px;
+  padding: 2px 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.seccion li p {
+  font-size: 1.2rem;
+  margin: 0;
+  flex: 1;
+  word-break: break-word; 
+}
+li i {
+  font-size: 18px;
+  color: #333;
+}
+
+.seccion li i {
+  font-size: 25px;
+}
+
+.fa-pencil::before { content: "\f304";}
+
+/* .seccion i {
+  margin-right: 5px;
+} */
+
+
+.seccion > ul p {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.seccion i:hover {
+  color: var(--green);
+  cursor: pointer;
+}
+.Agregar {
+background: linear-gradient(40deg,rgba(80, 188, 136, 0.91) 35%, rgba(87, 199, 133, 0.99) 82%);  height: 70px;
+  display: flex;
+  align-items: center;
+  gap: 70px;
+  padding: 10px;
+  margin: 40px 0;
+  border-radius: 15px;
+}
+
+.Agregar input {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  border: none;
+background: linear-gradient(40deg,rgba(80, 188, 136, 0.91) 35%, rgba(87, 199, 133, 0.99) 82%);  padding-left: 10px;
+}
+.Agregar input::placeholder {
+  font-size: 1.1rem;
+  color: var(--black);
+}
+
+.Agregar i {
+  font-size: 50px;
+background: linear-gradient(40deg,rgba(80, 188, 136, 0.91) 35%, rgba(87, 199, 133, 0.99) 82%); padding: 5px;
+border-radius: 50%;
+  color: var(--black);
+}
+.Agregar i:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.line-through {
+  text-decoration: line-through;
+  color: var(--red);
+}
+
+.boton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: red;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-roja {
+  position: fixed;
+  right: 20px;
+  background-color: red;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-roja:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+.btn-roja:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+.boton2 {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background-color: blue;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.boton2:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+.boton2:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}

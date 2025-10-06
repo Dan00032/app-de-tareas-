@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACTUALIZAR DATOS</title>
+    <link rel="stylesheet" href="Actualizar.css">
+</head>
+<body>
+    <h1>Actualizar datos</h1>
+    <div class="actualizar">
+        <input type="text" id="inputNombre" placeholder="Nuevo nombre" />
+        <input type="text" id="inputApellido" placeholder="Nuevo apellido" />
+        <button id="btnActualizar">Actualizar</button>
+    </div>
+    <button class="boton">REGRESAR</button>
+<script>
+ document.addEventListener("DOMContentLoaded", () => {
+      const inputNombre = document.getElementById("inputNombre");
+      const inputApellido = document.getElementById("inputApellido");
+      const btnActualizar = document.getElementById("btnActualizar");
+
+      // Obtenemos el usuario actual desde localStorage
+      const id_usuario = localStorage.getItem("id_usuario");
+
+      if (!id_usuario) {
+        alert("No hay usuario logueado");
+        return;
+      }
+
+      // Convertimos id_usuario a número
+      const idNum = Number(id_usuario);
+      if (isNaN(idNum)) {
+        alert("ID de usuario inválido en localStorage");
+        return;
+      }
+
+      btnActualizar.addEventListener("click", async () => {
+        const Nombre = inputNombre.value.trim();
+        const Apellido = inputApellido.value.trim();
+
+        if (!Nombre && !Apellido) {
+          alert("Ingresa al menos un dato para actualizar");
+          return;
+        }
+
+        try {
+          const res = await fetch(`https://backend-apptareas.onrender.com/usuarios/${idNum}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ Nombre, Apellido })
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            alert(data.error || "Error al actualizar");
+            console.error("Error backend:", data);
+          } else {
+            alert("Usuario actualizado correctamente");
+            console.log("Datos actualizados:", data);
+          }
+        } catch (err) {
+          console.error("Error de conexión:", err);
+          alert("Error al conectar con el servidor");
+        }
+      });
+    });
+document.querySelector(".boton").addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>
