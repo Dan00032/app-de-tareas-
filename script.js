@@ -91,8 +91,8 @@ function tareaEliminada(element) {
         confirmButtonColor: "#3085d6"
     });    return;
   }
-   if (textoElemento && tarea.nombre) {
-    textoElemento.textContent = tarea.nombre;
+   if (textoElemento && tarea.tema) {
+    textoElemento.textContent = tarea.tema;
   }
 
  fetch(`https://backend-apptareas.onrender.com/tareas/${idTarea}?id_usuario=${idUsuario}`, {
@@ -135,7 +135,7 @@ function tareaEliminada(element) {
 
 function cargarLista(array) {
   array.forEach(function (item) {
-    agregarTarea(item.nombre, item.id, item.realizado, item.eliminado);
+    agregarTarea(item.tema, item.id, item.realizado, item.eliminado);
   });
 }
 //----------------------------------------------------------------------------
