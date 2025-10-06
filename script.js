@@ -44,42 +44,58 @@ function tareaRealizada(element) {
   const idTarea = element.id; 
   const idUsuario = localStorage.getItem("id_usuario");
   if (!idUsuario) {
- Swal.fire({
-        title: "¡Usuario no encontrado!",
-        text: "No se encontró un usuario en sesión.",
-        icon: "success",
-        confirmButtonColor: "#3085d6"
-    });    return;
+    Swal.fire({
+      title: "¡Usuario no encontrado!",
+      text: "No se encontró un usuario en sesión.",
+      icon: "error",
+      confirmButtonColor: "#3085d6"
+    });
+    return;
   }
+
+  const tarea = LIST.find(t => t.id == idTarea);
+  if (!tarea) return;
+
+  const nuevoEstado = !tarea.realizado;
 
   fetch(`https://backend-apptareas.onrender.com/tareas/${idTarea}?id_usuario=${idUsuario}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hecho: true })
+    body: JSON.stringify({ hecho: nuevoEstado })
   })
-    .then(res => {
-      if (!res.ok) throw new Error("Error al actualizar en la BD");
-      return res.json();
-    })
-    .then(data => {
-      console.log("Tarea actualizada en BD:", data);
-      element.classList.toggle(check);
-      element.classList.toggle(uncheck);
-      element.parentNode.querySelector(".text").classList.toggle(lineThrough);
-      LIST = LIST.map(t => t.id == idTarea ? { ...t, realizado: !t.realizado } : t);
-      localStorage.setItem("TODO", JSON.stringify(LIST));
-    })
-    .catch(err => {
-      console.error("Error al actualizar tarea:", err);
-      Swal.fire({
-        title: "¡Error!",
-        text: "No se pudo actualizar la tarea.",
-        icon: "error",
-        confirmButtonColor: "#d33"
-      });
-    });
-}
+  .then(res => {
+    if (!res.ok) throw new Error("Error al actualizar en la BD");
+    return res.json();
+  })
+  .then(data => {
+    console.log("Tarea actualizada en BD:", data);
 
+    // Actualiza UI
+    const texto = element.parentNode.querySelector(".text");
+    if (nuevoEstado) {
+      element.classList.add(check);
+      element.classList.remove(uncheck);
+      texto.classList.add(lineThrough);
+    } else {
+      element.classList.add(uncheck);
+      element.classList.remove(check);
+      texto.classList.remove(lineThrough);
+    }
+
+    // Actualiza LIST y localStorage
+    tarea.realizado = nuevoEstado;
+    localStorage.setItem("TODO", JSON.stringify(LIST));
+  })
+  .catch(err => {
+    console.error("Error al actualizar tarea:", err);
+    Swal.fire({
+      title: "¡Error!",
+      text: "No se pudo actualizar la tarea.",
+      icon: "error",
+      confirmButtonColor: "#d33"
+    });
+  });
+}
 //-------------------------------------------------------------------------------------
 // Eliminar tarea
 function tareaEliminada(element) {
@@ -413,4 +429,5 @@ function tareaEditar(element) {
     if (e.key === "Enter") guardarCambios();
   });
 }
+
 
