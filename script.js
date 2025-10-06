@@ -79,60 +79,56 @@ function tareaRealizada(element) {
 
 //-------------------------------------------------------------------------------------
 // Eliminar tarea
-function tareaEliminada(element) {
-  const idTarea = element.id; 
+function tareaRealizada(element) {
+  const idTarea = element.id;
   const idUsuario = localStorage.getItem("id_usuario");
 
   if (!idUsuario) {
- Swal.fire({
-        title: "¡Usuario no encontrado!",
-        text: "No se encontró un usuario en sesión.",
-        icon: "success",
-        confirmButtonColor: "#3085d6"
-    });    return;
+    Swal.fire({
+      title: "¡Usuario no encontrado!",
+      text: "No se encontró un usuario en sesión.",
+      icon: "error",
+      confirmButtonColor: "#d33"
+    });
+    return;
   }
 
- fetch(`https://backend-apptareas.onrender.com/tareas/${idTarea}?id_usuario=${idUsuario}`, {
-  method: "DELETE"
-})
+  const textoElemento = element.parentNode.querySelector(".text");
+  const tarea = LIST.find(t => t.id == idTarea);
 
- .then(res => {
-    console.log("Respuesta backend:", res.status); 
-    if (!res.ok) throw new Error("Error al eliminar en la BD");
-    return res.text();
-})
-.then(data => {
-    console.log("Backend dijo:", data);
-    // Eliminar tarea del DOM
-    element.parentNode.parentNode.removeChild(element.parentNode);
-    // Actualizar lista y localStorage
-    LIST = LIST.filter(t => t.id != idTarea);
-    localStorage.setItem("TODO", JSON.stringify(LIST));
-    
-    // Mensaje de éxito
-    Swal.fire({
-        title: "¡Tarea eliminada!",
-        text: "La tarea se eliminó correctamente.",
-        icon: "success",
-        confirmButtonColor: "#3085d6"
-    });
-})
-.catch(err => {
-    console.error("Error al eliminar tarea:", err);
-    // Mensaje de error
-    Swal.fire({
+  if (!tarea) return;
+
+  // ✅ mantener texto aunque se marque
+  if (textoElemento && tarea.nombre) {
+    textoElemento.textContent = tarea.nombre;
+  }
+
+  // Cambiar icono y línea
+  element.classList.toggle(check);
+  element.classList.toggle(uncheck);
+  textoElemento.classList.toggle(lineThrough);
+
+  // Actualizar estado en memoria
+  tarea.realizado = !tarea.realizado;
+  localStorage.setItem("TODO", JSON.stringify(LIST));
+
+  // Enviar actualización al backend
+  fetch(`https://backend-apptareas.onrender.com/tareas/${idTarea}?id_usuario=${idUsuario}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ hecha: tarea.realizado })
+  })
+    .then(res => res.json())
+    .then(data => console.log("Tarea actualizada en BD:", data))
+    .catch(err => {
+      console.error("Error al actualizar tarea:", err);
+      Swal.fire({
         title: "¡Error!",
-        text: "No se pudo eliminar la tarea.",
+        text: "No se pudo actualizar la tarea.",
         icon: "error",
         confirmButtonColor: "#d33"
+      });
     });
-});
-}
-
-function cargarLista(array) {
-  array.forEach(function (item) {
-    agregarTarea(item.nombre, item.id, item.realizado, item.eliminado);
-  });
 }
 //----------------------------------------------------------------------------
 // Botón agregar tarea
@@ -221,11 +217,11 @@ function crearTarea(tema) {
   if (!LIST) LIST = [];
   if (typeof id !== 'number') id = 0;
   LIST.push({
-    nombre: data.tarea.tema,
-    id: data.tarea.id_tarea,
-    realizado: data.tarea.hecha,
-    eliminado: false
-  });
+  id: data.tarea.id_tarea,
+  nombre: data.tarea.tema,  
+  realizado: data.tarea.hecha,
+  eliminado: false
+});
   id++;
   localStorage.setItem("TODO", JSON.stringify(LIST));
 
