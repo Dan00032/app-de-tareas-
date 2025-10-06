@@ -347,6 +347,7 @@ function cargarTareasUsuario(id_usuario) {
         realizado: t.hecha,
         eliminado: false
       }));
+      console.log(tareasUsuario)
       id = LIST.length;
       cargarLista(LIST);
       localStorage.setItem("TODO", JSON.stringify(LIST));
@@ -389,7 +390,7 @@ function tareaEditar(element) {
     fetch(`https://backend-apptareas.onrender.com/tareas/${idTarea}?id_usuario=${idUsuario}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tema: nuevoTexto })
+      body: JSON.stringify({ tema: nuevoTexto, hecha: tarea.realizado})
     })
     .then(res => res.json())
     .then(data => {
